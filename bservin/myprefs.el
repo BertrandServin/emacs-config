@@ -32,6 +32,7 @@
                   "xetex --file-line-error --shell-escape" 
                   "xelatex --file-line-error --shell-escape" 
                   "xetex")))
+;; Switch dict easily
 (defun fd-switch-dictionary()
   (interactive)
   (let* ((dic ispell-current-dictionary)
@@ -41,6 +42,36 @@
     ))
     
 (global-set-key (kbd "<f8>")   'fd-switch-dictionary)
+;; Get a decent latex template
+(require 'ox-latex)
+(add-to-list 'org-latex-classes
+             '("bs-article"
+               "\\documentclass[12pt,xelatex,a4paper]{article}
+\\usepackage{fontspec}
+\\setmainfont[Mapping=tex-text]{Minion Pro}
+\\let\\sfdefault\\rmdefault
+\\usepackage{xunicode}
+\\usepackage{polyglossia}
+\\usepackage[top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm]{geometry}
+\\usepackage{graphicx} 
+\\usepackage{amsmath}
+\\usepackage{amssymb}
+\\usepackage{float}
+\\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\\hypersetup{pdfborderstyle={/S/U/W 1}}
+\\title{}
+[NO-DEFAULT-PACKAGES]
+[NO-PACKAGES]"
+("\\section{%s}" . "\\section*{%s}")
+("\\subsection{%s}" . "\\subsection*{%s}")
+("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+("\\paragraph{%s}" . "\\paragraph*{%s}")
+("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+;; Allow multiline bold and emphasis in org mode
+(setcar (nthcdr 4 org-emphasis-regexp-components) 1000)
+(setcar (nthcdr 4 org-emphasis-regexp-components) 1000)
+
+(setq org-reveal-root "/home/bservin/lib/js/reveal.js")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -49,9 +80,3 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (tango-dark)))
  '(inhibit-startup-screen t))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :slant normal :weight normal :height 120 :width normal)))))
